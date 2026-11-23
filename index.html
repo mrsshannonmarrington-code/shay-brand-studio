@@ -110,6 +110,12 @@ nav .button:hover,.hero .button:hover{background:var(--pink)}
 @media(max-width:820px){.hero{min-height:0}.hero-media{min-height:0}.hero-media img{width:min(70%,235px)}}
 @media(max-width:660px){.work{padding:3rem 0}.work-grid,.process ol{grid-template-columns:1fr}.hero-media img{width:min(56%,220px)}nav .wordmark{max-width:9rem}.nav-links{gap:.65rem}.nav-links a{font-size:.85rem}}
 </style>
+<script>
+  if (['#brief', '#references'].includes(location.hash) &&
+      (new URLSearchParams(location.search).has('tier') || location.hash === '#references')) {
+    location.replace('questionnaire.html' + location.search + location.hash);
+  }
+</script>
 </head>
 <body>
 <header class="mast"><div class="wrap">
@@ -131,11 +137,11 @@ nav .button:hover,.hero .button:hover{background:var(--pink)}
 <p class="intro">Start with an identity, add marketing materials, or get a complete launch kit. Prices are in USD per project. Timelines begin after discovery and receipt of your materials.</p>
 <div class="grid">
 <article class="tier"><h3>Brand Foundation</h3><p class="price">$1,500 <small>starting at</small></p><p>For businesses that need a polished visual identity.</p>
-<ul><li>Discovery call and creative direction</li><li>Primary logo and alternate mark</li><li>Color palette and typography</li><li>Quick brand guide and export files</li><li>Two revision rounds</li><li>Estimated 2–3 weeks</li></ul><a class="button" href="?tier=foundation#brief">Start Foundation questionnaire</a><a class="upload-link" href="?tier=foundation#references">Upload references</a></article>
+<ul><li>Discovery call and creative direction</li><li>Primary logo and alternate mark</li><li>Color palette and typography</li><li>Quick brand guide and export files</li><li>Two revision rounds</li><li>Estimated 2–3 weeks</li></ul><a class="button" href="questionnaire.html?tier=foundation#brief">Start Foundation questionnaire</a><a class="upload-link" href="questionnaire.html?tier=foundation#references">Upload references</a></article>
 <article class="tier featured"><h3>Brand &amp; Market</h3><p class="price">$3,500 <small>starting at</small></p><p>For businesses that need a clear message and materials they can use right away.</p>
-<ul><li>Everything in Brand Foundation</li><li>Audience, positioning and messaging guide</li><li>Six editable social templates</li><li>Business card and one-page flyer design</li><li>30-day content plan</li><li>Estimated 3–5 weeks</li></ul><a class="button" href="?tier=marketing#brief">Start Marketing questionnaire</a><a class="upload-link" href="?tier=marketing#references">Upload references</a></article>
+<ul><li>Everything in Brand Foundation</li><li>Audience, positioning and messaging guide</li><li>Six editable social templates</li><li>Business card and one-page flyer design</li><li>30-day content plan</li><li>Estimated 3–5 weeks</li></ul><a class="button" href="questionnaire.html?tier=marketing#brief">Start Marketing questionnaire</a><a class="upload-link" href="questionnaire.html?tier=marketing#references">Upload references</a></article>
 <article class="tier"><h3>Full Launch</h3><p class="price">$7,500 <small>starting at</small></p><p>For launches or rebrands that need a coordinated rollout.</p>
-<ul><li>Everything in Brand &amp; Market</li><li>One-page responsive website with copy and build</li><li>Three launch email drafts and three ad creatives</li><li>90-day rollout plan and handoff session</li><li>Three revision rounds total</li><li>Estimated 5–8 weeks</li></ul><a class="button" href="?tier=launch#brief">Start Launch questionnaire</a><a class="upload-link" href="?tier=launch#references">Upload references</a></article>
+<ul><li>Everything in Brand &amp; Market</li><li>One-page responsive website with copy and build</li><li>Three launch email drafts and three ad creatives</li><li>90-day rollout plan and handoff session</li><li>Three revision rounds total</li><li>Estimated 5–8 weeks</li></ul><a class="button" href="questionnaire.html?tier=launch#brief">Start Launch questionnaire</a><a class="upload-link" href="questionnaire.html?tier=launch#references">Upload references</a></article>
 </div>
 <p class="note">Final quotes depend on scope. Printing, ad spend, hosting, subscriptions and ongoing campaign management are billed separately if needed.</p>
 <details class="details"><summary>Can I swap deliverables?</summary><p>List what you need in your brief. For example, a trades business might ask to swap the flyer for a truck decal design. The final proposal confirms the scope, price and timeline.</p></details>
@@ -146,34 +152,7 @@ nav .button:hover,.hero .button:hover{background:var(--pink)}
 <li><strong>Review the direction</strong>We confirm scope and timing, then review creative direction before finalizing the designs.</li>
 <li><strong>Get your files</strong>Receive the designs and editable assets listed in your package, ready to use across your channels.</li>
 </ol></div></section>
-<section class="brief" id="brief"><div class="wrap">
-<div><h2>Brand questionnaire</h2><p class="intro">Tell me about your business and the look you have in mind. Share links to any existing brand files or examples you want me to see.</p>
-<div id="asset-summary" hidden><h3>Package deliverables</h3><p id="assets"></p></div></div>
-<form id="project" method="post" enctype="multipart/form-data" action="https://formsubmit.co/Mrs.shannonmarrington@gmail.com">
-<input type="hidden" name="_next" value="https://shay-brand-studio.netlify.app/?submitted=1#brief">
-<input type="hidden" name="_subject" value="Shay Brand Studio | New brand questionnaire">
-<input type="hidden" name="Tier button clicked" id="entry-tier">
-<input type="hidden" name="Package deliverables" id="package-assets">
-<label>Package<select id="package" name="Selected tier" required><option value="">Choose a package</option><option value="Brand Foundation">Brand Foundation</option><option value="Brand &amp; Market">Brand &amp; Market</option><option value="Full Launch">Full Launch</option></select></label>
-<label>Business name<input name="Business name" required autocomplete="organization" placeholder="Enter the exact spelling to use in your designs"></label>
-<label>Your name<input name="Contact name" required autocomplete="name"></label>
-<label>Email<input name="email" type="email" required autocomplete="email"></label>
-<label>What do you offer and who do you serve?<textarea name="Services and ideal customer" rows="2" required placeholder="Include your main services, ideal customers and service area if relevant"></textarea></label>
-<label>What should your brand help you achieve?<textarea name="Goals and positioning" rows="2" required placeholder="Share your goal and what sets your business apart"></textarea></label>
-<label>Color and style preferences<textarea name="Color and style preferences" rows="2" placeholder="List colors to use or avoid and describe the look. Example: navy and cream, bold and modern."></textarea></label>
-<label>Existing brand and inspiration links (optional)<textarea name="Existing brand and inspiration links" rows="2" placeholder="Website, social pages, logo files, inspiration or competitor examples"></textarea></label>
-<fieldset class="refs" id="references"><legend>Upload reference files (optional)</legend>
-<p id="draft-status" role="status" hidden></p>
-<p id="upload-help">Attach up to three JPG, PNG, WEBP, HEIC, HEIF or PDF files. Maximum 10 MB total. For larger files or other formats, use the link field above.</p>
-<label>Reference file 1<input type="file" name="Reference file 1" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" aria-describedby="upload-help"></label>
-<label>Reference file 2<input type="file" name="Reference file 2" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" aria-describedby="upload-help"></label>
-<label>Reference file 3<input type="file" name="Reference file 3" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" aria-describedby="upload-help"></label>
-<p id="upload-error" role="status" hidden></p></fieldset>
-<label>Assets you need or want to prioritize<textarea name="Client asset priorities" rows="2" required placeholder="Example: a truck decal, a social launch graphic or a landing page. Include any must-have wording or sizes."></textarea></label>
-<label>Target launch date (optional)<input name="Target launch date" type="date"></label>
-<p class="note">Your answers will be sent to Shay Brand Studio through FormSubmit. Keep passwords and sensitive documents out of your response.</p>
-<div class="actions"><button type="submit">Send questionnaire</button></div>
-</form></div></section>
+<section class="brief" id="brief"><div class="wrap"><div><h2>Brand questionnaire</h2><p class="intro">Tell me about your business and attach any reference photos or files.</p><a class="button" href="questionnaire.html#brief">Open questionnaire</a></div></div></section>
 </main>
 <footer class="wrap">Shay Brand Studio · Branding &amp; Marketing Design</footer>
 <dialog id="art-dialog" aria-label="Ember Coffee review board" style="max-width:94vw;max-height:94vh;background:#211624;color:white;border:0;border-radius:1rem;padding:.75rem"><form method="dialog"><button autofocus>Close preview</button></form><img alt="Full Ember Coffee business card review board" style="display:block;max-width:100%;max-height:78vh;margin:.6rem auto 0;object-fit:contain"></dialog>
@@ -186,105 +165,6 @@ artLink.addEventListener('click', event => {
   artDialog.querySelector('img').src = artLink.querySelector('img').src;
   artDialog.showModal();
 });
-const referenceInputs = [...document.querySelectorAll('#references input')];
-const uploadError = document.querySelector('#upload-error');
-function checkReferences() {
-  const files = referenceInputs.flatMap(input => Array.from(input.files));
-  let error = '';
-  if (files.some(file => !/\.(jpe?g|png|webp|heic|heif|pdf)$/i.test(file.name))) {
-    error = 'Choose JPG, PNG, WEBP, HEIC, HEIF or PDF files.';
-  } else if (files.reduce((total, file) => total + file.size, 0) > 10000000) {
-    error = 'Attachments exceed 10 MB total. Remove a file or include a share link.';
-  }
-  referenceInputs[0].setCustomValidity(error);
-  uploadError.textContent = error;
-  uploadError.hidden = !error;
-  return !error;
-}
-for (const input of referenceInputs) input.addEventListener('change', checkReferences);
-document.querySelector('#project').addEventListener('submit', event => {
-  if (!checkReferences()) {
-    event.preventDefault();
-    referenceInputs[0].reportValidity();
-  }
-});
-
-const foundation = 'Primary logo, alternate mark, color palette, typography, quick brand guide and logo export files.';
-const marketing = foundation + ' Audience and positioning guide, brand messaging, six editable social templates, business card design, one-page flyer design and 30-day content plan.';
-const packages = {
-  'Brand Foundation': foundation,
-  'Brand & Market': marketing,
-  'Full Launch': marketing + ' One-page responsive website with copy, three launch email drafts, three ad creatives and a 90-day rollout plan.'
-};
-const tierBySlug = new Map([
-  ['foundation', 'Brand Foundation'],
-  ['marketing', 'Brand & Market'],
-  ['launch', 'Full Launch']
-]);
-const packageField = document.querySelector('#package');
-function updatePackage() {
-  const selected = packageField.value;
-  const assets = packages[selected] || '';
-  document.querySelector('#package-assets').value = assets;
-  document.querySelector('#assets').textContent = assets;
-  document.querySelector('#asset-summary').hidden = !assets;
-  document.querySelector('[name="_subject"]').value =
-    'Shay Brand Studio | ' + (selected || 'New brand questionnaire');
-}
-const params = new URLSearchParams(location.search);
-const tier = params.get('tier');
-const projectForm = document.querySelector('#project');
-const draftFields = [...projectForm.querySelectorAll('select[name], textarea[name], input[name]:not([type="hidden"]):not([type="file"])')];
-const draftKey = 'shay-brand-questionnaire';
-const draftStatus = document.querySelector('#draft-status');
-function saveDraft(openingPicker) {
-  try {
-    const answers = Object.fromEntries(draftFields.map(field => [field.name, field.value]));
-    sessionStorage.setItem(draftKey, JSON.stringify({tier, openingPicker, answers}));
-  } catch {
-    // Keep the form usable when browser storage is unavailable.
-  }
-}
-if (tierBySlug.has(tier)) {
-  packageField.value = tierBySlug.get(tier);
-  document.querySelector('#entry-tier').value = packageField.value;
-}
-try {
-  if (params.get('submitted') === '1') {
-    sessionStorage.removeItem(draftKey);
-    history.replaceState(null, "", location.pathname + location.hash);
-    const confirmation = document.createElement('p');
-    confirmation.setAttribute('role', 'status');
-    confirmation.textContent = 'Thanks. Your questionnaire was submitted.';
-    projectForm.before(confirmation);
-  } else {
-    const draft = JSON.parse(sessionStorage.getItem(draftKey) || 'null');
-    if (draft && draft.tier === tier) {
-      for (const field of draftFields) {
-        if (typeof draft.answers?.[field.name] === 'string') field.value = draft.answers[field.name];
-      }
-      if (draft.openingPicker) {
-        draftStatus.textContent = 'Your answers were restored. If a photo is missing, add it again or paste a share link above.';
-        draftStatus.hidden = false;
-        window.addEventListener('load', () => {
-          document.querySelector('#references').scrollIntoView({block: 'nearest', behavior: 'instant'});
-        }, {once: true});
-        saveDraft(false);
-      }
-    }
-  }
-} catch {
-  // A missing or unreadable draft should never block questionnaire entry.
-}
-projectForm.addEventListener('input', () => saveDraft(false));
-projectForm.addEventListener('change', () => saveDraft(false));
-for (const input of referenceInputs) {
-  input.addEventListener('click', () => saveDraft(true));
-}
-packageField.addEventListener('change', updatePackage);
-document.querySelector('#project').addEventListener('submit', updatePackage);
-window.addEventListener('pageshow', updatePackage);
-updatePackage();
 </script>
 </body>
 </html>
