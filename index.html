@@ -150,6 +150,7 @@ nav .button:hover,.hero .button:hover{background:var(--pink)}
 <div><h2>Brand questionnaire</h2><p class="intro">Tell me about your business and the look you have in mind. Share links to any existing brand files or examples you want me to see.</p>
 <div id="asset-summary" hidden><h3>Package deliverables</h3><p id="assets"></p></div></div>
 <form id="project" method="post" enctype="multipart/form-data" action="https://formsubmit.co/Mrs.shannonmarrington@gmail.com">
+<input type="hidden" name="_next" value="https://shay-brand-studio.netlify.app/?submitted=1#brief">
 <input type="hidden" name="_subject" value="Shay Brand Studio | New brand questionnaire">
 <input type="hidden" name="Tier button clicked" id="entry-tier">
 <input type="hidden" name="Package deliverables" id="package-assets">
@@ -162,10 +163,11 @@ nav .button:hover,.hero .button:hover{background:var(--pink)}
 <label>Color and style preferences<textarea name="Color and style preferences" rows="2" placeholder="List colors to use or avoid and describe the look. Example: navy and cream, bold and modern."></textarea></label>
 <label>Existing brand and inspiration links (optional)<textarea name="Existing brand and inspiration links" rows="2" placeholder="Website, social pages, logo files, inspiration or competitor examples"></textarea></label>
 <fieldset class="refs" id="references"><legend>Upload reference files (optional)</legend>
-<p id="upload-help">Attach up to three JPG, PNG, WEBP or PDF files. Maximum 10 MB total. For larger files or other formats, use the link field above.</p>
-<label>Reference file 1<input type="file" name="Reference file 1" accept=".jpg,.jpeg,.png,.webp,.pdf" aria-describedby="upload-help"></label>
-<label>Reference file 2<input type="file" name="Reference file 2" accept=".jpg,.jpeg,.png,.webp,.pdf" aria-describedby="upload-help"></label>
-<label>Reference file 3<input type="file" name="Reference file 3" accept=".jpg,.jpeg,.png,.webp,.pdf" aria-describedby="upload-help"></label>
+<p id="draft-status" role="status" hidden></p>
+<p id="upload-help">Attach up to three JPG, PNG, WEBP, HEIC, HEIF or PDF files. Maximum 10 MB total. For larger files or other formats, use the link field above.</p>
+<label>Reference file 1<input type="file" name="Reference file 1" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" aria-describedby="upload-help"></label>
+<label>Reference file 2<input type="file" name="Reference file 2" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" aria-describedby="upload-help"></label>
+<label>Reference file 3<input type="file" name="Reference file 3" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" aria-describedby="upload-help"></label>
 <p id="upload-error" role="status" hidden></p></fieldset>
 <label>Assets you need or want to prioritize<textarea name="Client asset priorities" rows="2" required placeholder="Example: a truck decal, a social launch graphic or a landing page. Include any must-have wording or sizes."></textarea></label>
 <label>Target launch date (optional)<input name="Target launch date" type="date"></label>
@@ -189,8 +191,8 @@ const uploadError = document.querySelector('#upload-error');
 function checkReferences() {
   const files = referenceInputs.flatMap(input => Array.from(input.files));
   let error = '';
-  if (files.some(file => !/\.(jpe?g|png|webp|pdf)$/i.test(file.name))) {
-    error = 'Choose JPG, PNG, WEBP or PDF files.';
+  if (files.some(file => !/\.(jpe?g|png|webp|heic|heif|pdf)$/i.test(file.name))) {
+    error = 'Choose JPG, PNG, WEBP, HEIC, HEIF or PDF files.';
   } else if (files.reduce((total, file) => total + file.size, 0) > 10000000) {
     error = 'Attachments exceed 10 MB total. Remove a file or include a share link.';
   }
@@ -229,10 +231,55 @@ function updatePackage() {
   document.querySelector('[name="_subject"]').value =
     'Shay Brand Studio | ' + (selected || 'New brand questionnaire');
 }
-const tier = new URLSearchParams(location.search).get('tier');
+const params = new URLSearchParams(location.search);
+const tier = params.get('tier');
+const projectForm = document.querySelector('#project');
+const draftFields = [...projectForm.querySelectorAll('select[name], textarea[name], input[name]:not([type="hidden"]):not([type="file"])')];
+const draftKey = 'shay-brand-questionnaire';
+const draftStatus = document.querySelector('#draft-status');
+function saveDraft(openingPicker) {
+  try {
+    const answers = Object.fromEntries(draftFields.map(field => [field.name, field.value]));
+    sessionStorage.setItem(draftKey, JSON.stringify({tier, openingPicker, answers}));
+  } catch {
+    // Keep the form usable when browser storage is unavailable.
+  }
+}
 if (tierBySlug.has(tier)) {
   packageField.value = tierBySlug.get(tier);
   document.querySelector('#entry-tier').value = packageField.value;
+}
+try {
+  if (params.get('submitted') === '1') {
+    sessionStorage.removeItem(draftKey);
+    history.replaceState(null, "", location.pathname + location.hash);
+    const confirmation = document.createElement('p');
+    confirmation.setAttribute('role', 'status');
+    confirmation.textContent = 'Thanks. Your questionnaire was submitted.';
+    projectForm.before(confirmation);
+  } else {
+    const draft = JSON.parse(sessionStorage.getItem(draftKey) || 'null');
+    if (draft && draft.tier === tier) {
+      for (const field of draftFields) {
+        if (typeof draft.answers?.[field.name] === 'string') field.value = draft.answers[field.name];
+      }
+      if (draft.openingPicker) {
+        draftStatus.textContent = 'Your answers were restored. If a photo is missing, add it again or paste a share link above.';
+        draftStatus.hidden = false;
+        window.addEventListener('load', () => {
+          document.querySelector('#references').scrollIntoView({block: 'nearest', behavior: 'instant'});
+        }, {once: true});
+        saveDraft(false);
+      }
+    }
+  }
+} catch {
+  // A missing or unreadable draft should never block questionnaire entry.
+}
+projectForm.addEventListener('input', () => saveDraft(false));
+projectForm.addEventListener('change', () => saveDraft(false));
+for (const input of referenceInputs) {
+  input.addEventListener('click', () => saveDraft(true));
 }
 packageField.addEventListener('change', updatePackage);
 document.querySelector('#project').addEventListener('submit', updatePackage);
